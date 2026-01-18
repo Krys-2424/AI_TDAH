@@ -1,0 +1,95 @@
+{
+  "history": [],
+  "form_feedback": {
+    "spiciness": [],
+    "duration": [
+      {
+        "type": "duration",
+        "task_id": "task-1768752341623-4",
+        "estimated_time": 25,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:05:47.574625"
+      },
+      {
+        "type": "duration",
+        "task_id": "task-1768752341623-4",
+        "estimated_time": 25,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:05:49.879612"
+      },
+      {
+        "type": "duration",
+        "task_id": "task-1768752341623-3",
+        "estimated_time": 25,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:05:49.948186"
+      },
+      {
+        "type": "duration",
+        "task_id": "task-1768752341623-3",
+        "estimated_time": 25,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:05:52.057957"
+      },
+      {
+        "type": "duration",
+        "task_id": "task-1768752341623-4",
+        "estimated_time": 25,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:05:53.921855"
+      },
+      {
+        "type": "duration",
+        "task_id": "task-1768752341623-5",
+        "estimated_time": 30,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:05:55.375106"
+      },
+      {
+        "type": "duration",
+        "task_id": "unknown",
+        "estimated_time": 30,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:10:20.363971"
+      },
+      {
+        "type": "duration",
+        "task_id": "unknown",
+        "estimated_time": 30,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:10:26.164258"
+      },
+      {
+        "type": "duration",
+        "task_id": "unknown",
+        "estimated_time": 30,
+        "actual_time": 0,
+        "feedback": "too_long",
+        "efficiency": 1.0,
+        "timestamp": "2026-01-18T17:10:27.159073"
+      }
+    ],
+    "difficulty": []
+  },
+  "pedagogical_feedback": [],
+  "last_session": null,
+  "sessions": [],
+  "total_tasks_completed": 0,
+  "total_feedback_given": 0
+}

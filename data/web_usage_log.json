@@ -1,0 +1,36 @@
+{
+  "total_requests": 0,
+  "requests_today": 0,
+  "last_request_date": null,
+  "history": [],
+  "permission_changes": [
+    {
+      "timestamp": "2026-01-18T17:01:49.849493",
+      "action": "permission_granted"
+    },
+    {
+      "timestamp": "2026-01-18T17:05:05.822745",
+      "action": "permission_revoked"
+    },
+    {
+      "timestamp": "2026-01-18T17:05:06.657118",
+      "action": "permission_granted"
+    },
+    {
+      "timestamp": "2026-01-18T17:09:59.569459",
+      "action": "permission_revoked"
+    },
+    {
+      "timestamp": "2026-01-18T17:10:00.124568",
+      "action": "permission_granted"
+    },
+    {
+      "timestamp": "2026-01-18T17:10:58.965106",
+      "action": "permission_revoked"
+    },
+    {
+      "timestamp": "2026-01-18T17:11:05.427143",
+      "action": "permission_granted"
+    }
+  ]
+}

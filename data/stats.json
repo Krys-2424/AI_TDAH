@@ -1,0 +1,16 @@
+{
+  "total_sessions": 0,
+  "total_tasks_decomposed": 0,
+  "total_pomodoros_completed": 0,
+  "total_focus_time_minutes": 0,
+  "subjects_studied": {},
+  "efficiency_history": [],
+  "daily_stats": {},
+  "weekly_summaries": [],
+  "achievements": [],
+  "streaks": {
+    "current": 0,
+    "best": 0,
+    "last_activity_date": null
+  }
+}

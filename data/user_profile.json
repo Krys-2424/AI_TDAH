@@ -1,0 +1,30 @@
+{
+  "preferred_spiciness": 2,
+  "focus_duration": 20,
+  "difficulty_bias": {
+    "maths": 0,
+    "histoire": 0,
+    "physique": 0,
+    "francais": 0,
+    "anglais": 0
+  },
+  "fatigue_sensitivity": 0.5,
+  "web_enabled": true,
+  "preferred_hours": {
+    "17": 9
+  },
+  "subject_preferences": {},
+  "total_tasks_completed": 9,
+  "streak_days": 0,
+  "last_session": null,
+  "difficulty_biases": {
+    "maths": 0,
+    "histoire": 0,
+    "sciences": 0,
+    "francais": 0,
+    "anglais": 0
+  },
+  "activity_hours": {},
+  "created_at": null,
+  "updated_at": null
+}
