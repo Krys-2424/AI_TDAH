@@ -549,6 +549,300 @@
         .tab-content.active {
             display: block;
         }
+
+        /* Section A Connaitre */
+        .connaitre-section {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .connaitre-section h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .matiere-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .matiere-btn {
+            padding: 10px 18px;
+            border: 2px solid var(--accent-primary);
+            background: transparent;
+            color: var(--accent-primary);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .matiere-btn.active,
+        .matiere-btn:hover {
+            background: var(--accent-primary);
+            color: #fff;
+        }
+
+        .matiere-btn .matiere-icon {
+            margin-right: 5px;
+        }
+
+        .matiere-content {
+            display: none;
+        }
+
+        .matiere-content.active {
+            display: block;
+        }
+
+        /* Frise chronologique */
+        .frise-container {
+            margin: 20px 0;
+        }
+
+        .frise-title {
+            font-size: 1.2em;
+            color: var(--accent-primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-primary);
+        }
+
+        .frise {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .frise::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            border-radius: 3px;
+        }
+
+        .frise-item {
+            position: relative;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .frise-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            border: 3px solid var(--bg-secondary);
+        }
+
+        .frise-item:hover {
+            background: var(--bg-secondary);
+            transform: translateX(5px);
+        }
+
+        .frise-date {
+            font-weight: bold;
+            color: var(--accent-primary);
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .frise-event {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .frise-detail {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Cartes de definitions */
+        .definitions-container {
+            margin: 20px 0;
+        }
+
+        .definition-card {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-left: 4px solid #4CAF50;
+            transition: all 0.3s;
+        }
+
+        .definition-card:hover {
+            background: var(--bg-secondary);
+            transform: translateX(5px);
+        }
+
+        .definition-term {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+        }
+
+        .definition-text {
+            color: var(--text-conseil);
+            line-height: 1.5;
+        }
+
+        /* Cartes de formules */
+        .formules-container {
+            margin: 20px 0;
+        }
+
+        .formule-card {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-left: 4px solid #FF9800;
+            transition: all 0.3s;
+        }
+
+        .formule-card:hover {
+            background: var(--bg-secondary);
+            transform: translateX(5px);
+        }
+
+        .formule-name {
+            font-weight: bold;
+            color: #FF9800;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+        }
+
+        .formule-expression {
+            font-family: 'Courier New', monospace;
+            background: var(--input-bg);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            color: var(--text-primary);
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .formule-description {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        /* Type badges */
+        .type-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .type-badge.frise {
+            background: rgba(102, 126, 234, 0.2);
+            color: var(--accent-primary);
+        }
+
+        .type-badge.definition {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .type-badge.formule {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+        }
+
+        /* Section vide */
+        .empty-section {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .empty-section-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Bouton ajouter contenu IA */
+        .btn-generate-content {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-generate-content:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-generate-content:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Style pour le select niveau */
+        .niveau-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--accent-primary);
+            border-radius: 10px;
+            background-color: #1a1a2e;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23667eea' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 35px;
+        }
+
+        [data-theme="light"] .niveau-select {
+            background-color: #ffffff;
+        }
+
+        .niveau-select option {
+            background-color: #1a1a2e;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        [data-theme="light"] .niveau-select option {
+            background-color: #ffffff;
+            color: #1a1a2e;
+        }
     </style>
 </head>
 <body>
@@ -567,6 +861,7 @@
             <button class="nav-tab active" data-tab="taches">Taches</button>
             <button class="nav-tab" data-tab="pomodoro">Pomodoro</button>
             <button class="nav-tab" data-tab="conseils">Conseils</button>
+            <button class="nav-tab" data-tab="connaitre">A connaitre</button>
         </div>
 
         <!-- Onglet Taches -->
@@ -713,6 +1008,71 @@
 
                 <button class="btn-new-conseil" id="btn-new-conseil">Obtenir un conseil personnalise (IA)</button>
                 <div id="conseil-ia" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <!-- Onglet A Connaitre -->
+        <div class="tab-content" id="tab-connaitre">
+            <div class="connaitre-section">
+                <h2>Fiches de revision personnalisees</h2>
+
+                <div class="input-section" style="margin-bottom: 20px;">
+                    <label for="revision-input">Quel sujet veux-tu reviser ?</label>
+                    <textarea id="revision-input" placeholder="Ex: La Revolution francaise, Les equations du second degre, Le romantisme en litterature, Les protocoles reseau TCP/IP..."></textarea>
+
+                    <div style="margin-top: 15px;">
+                        <label for="niveau-select" style="display: block; margin-bottom: 8px;">Ton niveau scolaire :</label>
+                        <select id="niveau-select" class="niveau-select">
+                            <option value="college">College (6e - 3e)</option>
+                            <option value="seconde">Seconde</option>
+                            <option value="premiere">Premiere</option>
+                            <option value="terminale">Terminale</option>
+                            <option value="bts" selected>BTS / DUT</option>
+                            <option value="licence">Licence / Prepa</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary" id="btn-generate-fiche" style="margin-top: 15px;">Generer ma fiche de revision</button>
+                </div>
+
+                <div id="fiche-loading" class="loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Generation de ta fiche personnalisee...</p>
+                </div>
+
+                <div id="fiche-content" style="display: none;">
+                    <!-- Dates/Frise (si pertinent) -->
+                    <div id="fiche-dates" class="frise-container" style="display: none;">
+                        <h3 class="frise-title">&#128197; Dates importantes</h3>
+                        <div class="frise" id="frise-list"></div>
+                    </div>
+
+                    <!-- Definitions -->
+                    <div id="fiche-definitions" class="definitions-container" style="display: none;">
+                        <h3 class="frise-title">&#128213; Definitions cles</h3>
+                        <div id="definitions-list"></div>
+                    </div>
+
+                    <!-- Formules -->
+                    <div id="fiche-formules" class="formules-container" style="display: none;">
+                        <h3 class="frise-title">&#128290; Formules essentielles</h3>
+                        <div id="formules-list"></div>
+                    </div>
+
+                    <!-- Points cles / A retenir -->
+                    <div id="fiche-points" class="definitions-container" style="display: none;">
+                        <h3 class="frise-title">&#128161; Points cles a retenir</h3>
+                        <div id="points-list"></div>
+                    </div>
+                </div>
+
+                <div id="fiche-error" class="error" style="display: none;"></div>
+
+                <!-- Historique des fiches generees -->
+                <div id="fiches-historique" style="margin-top: 30px; display: none;">
+                    <h3 style="color: var(--text-secondary); margin-bottom: 15px;">Fiches precedentes</h3>
+                    <div id="historique-list" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -1207,6 +1567,243 @@ CONSEIL: [ton conseil]`;
 
             btnNewConseil.disabled = false;
             btnNewConseil.textContent = 'Obtenir un conseil personnalise (IA)';
+        });
+
+        // =============================================
+        // SECTION A CONNAITRE - FICHES DYNAMIQUES
+        // =============================================
+        const revisionInput = document.getElementById('revision-input');
+        const niveauSelect = document.getElementById('niveau-select');
+        const btnGenerateFiche = document.getElementById('btn-generate-fiche');
+
+        // Sauvegarder le niveau choisi
+        const savedNiveau = localStorage.getItem('niveau-scolaire');
+        if (savedNiveau) {
+            niveauSelect.value = savedNiveau;
+        }
+        niveauSelect.addEventListener('change', () => {
+            localStorage.setItem('niveau-scolaire', niveauSelect.value);
+        });
+        const ficheLoading = document.getElementById('fiche-loading');
+        const ficheContent = document.getElementById('fiche-content');
+        const ficheError = document.getElementById('fiche-error');
+        const fichesHistorique = document.getElementById('fiches-historique');
+        const historiqueList = document.getElementById('historique-list');
+
+        // Elements pour afficher le contenu
+        const ficheDates = document.getElementById('fiche-dates');
+        const ficheDefinitions = document.getElementById('fiche-definitions');
+        const ficheFormules = document.getElementById('fiche-formules');
+        const fichePoints = document.getElementById('fiche-points');
+        const friseList = document.getElementById('frise-list');
+        const definitionsList = document.getElementById('definitions-list');
+        const formulesList = document.getElementById('formules-list');
+        const pointsList = document.getElementById('points-list');
+
+        // Historique des fiches
+        let fichesHistory = JSON.parse(localStorage.getItem('fiches-history') || '[]');
+
+        function updateHistoriqueDisplay() {
+            if (fichesHistory.length === 0) {
+                fichesHistorique.style.display = 'none';
+                return;
+            }
+
+            fichesHistorique.style.display = 'block';
+            historiqueList.innerHTML = '';
+
+            fichesHistory.slice(-5).reverse().forEach((fiche, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn';
+                btn.textContent = fiche.sujet.substring(0, 25) + (fiche.sujet.length > 25 ? '...' : '');
+                btn.title = fiche.sujet;
+                btn.addEventListener('click', () => {
+                    displayFicheData(fiche.data);
+                    ficheContent.style.display = 'block';
+                });
+                historiqueList.appendChild(btn);
+            });
+        }
+
+        updateHistoriqueDisplay();
+
+        function displayFicheData(data) {
+            // Reset all sections
+            ficheDates.style.display = 'none';
+            ficheDefinitions.style.display = 'none';
+            ficheFormules.style.display = 'none';
+            fichePoints.style.display = 'none';
+            friseList.innerHTML = '';
+            definitionsList.innerHTML = '';
+            formulesList.innerHTML = '';
+            pointsList.innerHTML = '';
+
+            // Afficher les dates si presentes
+            if (data.dates && data.dates.length > 0) {
+                ficheDates.style.display = 'block';
+                data.dates.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'frise-item';
+                    div.innerHTML = `
+                        <div class="frise-date">${item.date}</div>
+                        <div class="frise-event">${item.evenement}</div>
+                        ${item.detail ? `<div class="frise-detail">${item.detail}</div>` : ''}
+                    `;
+                    friseList.appendChild(div);
+                });
+            }
+
+            // Afficher les definitions si presentes
+            if (data.definitions && data.definitions.length > 0) {
+                ficheDefinitions.style.display = 'block';
+                data.definitions.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'definition-card';
+                    div.innerHTML = `
+                        <div class="definition-term">${item.terme}</div>
+                        <div class="definition-text">${item.definition}</div>
+                    `;
+                    definitionsList.appendChild(div);
+                });
+            }
+
+            // Afficher les formules si presentes
+            if (data.formules && data.formules.length > 0) {
+                ficheFormules.style.display = 'block';
+                data.formules.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'formule-card';
+                    div.innerHTML = `
+                        <div class="formule-name">${item.nom}</div>
+                        <div class="formule-expression">${item.formule}</div>
+                        ${item.description ? `<div class="formule-description">${item.description}</div>` : ''}
+                    `;
+                    formulesList.appendChild(div);
+                });
+            }
+
+            // Afficher les points cles si presents
+            if (data.points && data.points.length > 0) {
+                fichePoints.style.display = 'block';
+                data.points.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'definition-card';
+                    div.style.borderLeftColor = '#667eea';
+                    div.innerHTML = `
+                        <div class="definition-term" style="color: #667eea;">${item.titre}</div>
+                        <div class="definition-text">${item.contenu}</div>
+                    `;
+                    pointsList.appendChild(div);
+                });
+            }
+        }
+
+        btnGenerateFiche.addEventListener('click', async () => {
+            const sujet = revisionInput.value.trim();
+            if (!sujet) {
+                alert('Indique le sujet que tu veux reviser !');
+                return;
+            }
+
+            ficheLoading.style.display = 'block';
+            ficheContent.style.display = 'none';
+            ficheError.style.display = 'none';
+            btnGenerateFiche.disabled = true;
+
+            try {
+                const niveau = niveauSelect.value;
+                const niveauLabels = {
+                    'college': 'College (6e-3e) - vocabulaire simple, concepts de base',
+                    'seconde': 'Seconde - notions intermediaires, debut de specialisation',
+                    'premiere': 'Premiere - notions avancees, preparation au bac',
+                    'terminale': 'Terminale - niveau bac, concepts approfondis',
+                    'bts': 'BTS/DUT - niveau post-bac, applications professionnelles',
+                    'licence': 'Licence/Prepa - niveau universitaire, rigueur scientifique'
+                };
+
+                const prompt = `Tu es un assistant pedagogique expert.
+
+SUJET A REVISER : "${sujet}"
+NIVEAU SCOLAIRE : ${niveauLabels[niveau]}
+
+Genere une fiche de revision ADAPTEE au sujet ET au niveau demande.
+
+REPONDS UNIQUEMENT en JSON valide. Utilise UNIQUEMENT les sections pertinentes :
+
+{
+  "dates": [
+    {"date": "1789", "evenement": "Revolution francaise", "detail": "Prise de la Bastille"}
+  ],
+  "definitions": [
+    {"terme": "Terme", "definition": "Explication claire"}
+  ],
+  "formules": [
+    {"nom": "Nom", "formule": "E = mc²", "description": "Explication"}
+  ],
+  "points": [
+    {"titre": "Point important", "contenu": "A retenir"}
+  ]
+}
+
+REGLES STRICTES :
+- ADAPTE LA COMPLEXITE AU NIVEAU : vocabulaire, profondeur des explications, difficulte des formules
+- "dates" : UNIQUEMENT si le sujet est de l'HISTOIRE ou des EVENEMENTS HISTORIQUES. PAS pour maths, sciences, info, langues.
+- "formules" : UNIQUEMENT pour maths, physique, chimie, economie. PAS pour histoire, francais, langues.
+- "definitions" : TOUJOURS inclure (adapte au niveau)
+- "points" : TOUJOURS inclure (adapte au niveau)
+- Si une section n'est pas pertinente au SUJET, NE PAS l'inclure
+- Maximum 6 elements par section
+- JSON uniquement, sans texte avant ou apres`;
+
+                const response = await puter.ai.chat(prompt);
+
+                let text = '';
+                if (typeof response === 'string') {
+                    text = response;
+                } else if (response?.message?.content) {
+                    text = response.message.content;
+                } else if (response?.text) {
+                    text = response.text;
+                } else if (response?.content) {
+                    text = response.content;
+                }
+
+                // Nettoyer le texte pour extraire le JSON
+                text = text.trim();
+                // Enlever les balises markdown si presentes
+                if (text.startsWith('```json')) {
+                    text = text.replace(/^```json\n?/, '').replace(/\n?```$/, '');
+                } else if (text.startsWith('```')) {
+                    text = text.replace(/^```\n?/, '').replace(/\n?```$/, '');
+                }
+
+                const data = JSON.parse(text);
+
+                // Afficher les donnees
+                displayFicheData(data);
+                ficheContent.style.display = 'block';
+
+                // Sauvegarder dans l'historique
+                fichesHistory.push({
+                    sujet: sujet,
+                    data: data,
+                    date: new Date().toISOString()
+                });
+                // Garder seulement les 10 dernieres fiches
+                if (fichesHistory.length > 10) {
+                    fichesHistory = fichesHistory.slice(-10);
+                }
+                localStorage.setItem('fiches-history', JSON.stringify(fichesHistory));
+                updateHistoriqueDisplay();
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                ficheError.textContent = `Erreur lors de la generation : ${error.message}`;
+                ficheError.style.display = 'block';
+            }
+
+            ficheLoading.style.display = 'none';
+            btnGenerateFiche.disabled = false;
         });
     </script>
 </body>
