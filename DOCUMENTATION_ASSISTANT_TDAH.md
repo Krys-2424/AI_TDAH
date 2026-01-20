@@ -24,10 +24,12 @@ L'Assistant TDAH Intelligent est une application web concu pour aider les person
 
 ### Fonctionnalites principales
 1. **Decomposition de taches** : L'IA decompose une tache complexe en sous-etapes
-2. **Minuteur Pomodoro** : Timer configurable avec pauses courtes/longues
-3. **Conseils TDAH** : Conseils pre-enregistres + generation IA
-4. **Fiches de revision** : Generation dynamique adaptee au sujet et au niveau scolaire
-5. **Theme clair/sombre** : Basculement automatique ou manuel
+2. **Systeme de felicitations** : Animation avec confettis quand toutes les taches sont completees
+3. **Minuteur Pomodoro** : Timer configurable avec pauses courtes/longues
+4. **Conseils TDAH** : Conseils pre-enregistres + generation IA
+5. **Fiches de revision** : Generation dynamique adaptee au sujet et au niveau scolaire
+6. **Systeme de feedback** : Notation et retours pour ameliorer les fiches futures
+7. **Theme clair/sombre** : Basculement automatique ou manuel
 
 ---
 
@@ -45,7 +47,7 @@ L'Assistant TDAH Intelligent est une application web concu pour aider les person
   - Pas besoin de cle API (authentification via popup)
 
 ### Stockage
-- **localStorage** : Sauvegarde des preferences (theme, niveau scolaire, historique des fiches)
+- **localStorage** : Sauvegarde des preferences (theme, niveau scolaire, historique des fiches, feedbacks)
 
 ---
 
@@ -1003,8 +1005,91 @@ REGLES STRICTES :
 - Checkbox pour marquer les taches terminees
 - Statistiques en temps reel (total, terminees, progression)
 - Animation visuelle des taches completees
+- **Systeme de felicitations** quand toutes les taches sont cochees
 
-### 5.2 Minuteur Pomodoro
+### 5.2 Systeme de felicitations
+
+**Declenchement** : Quand toutes les checkboxes sont cochees (100% de progression)
+
+**Elements visuels** :
+- **Confettis animes** : 50 confettis colores tombent du haut de l'ecran
+- **Popup de felicitations** avec :
+  - Emoji anime (rebondit)
+  - Message aleatoire parmi 5 possibilites
+  - Bouton "Continuer" pour fermer
+
+**Messages aleatoires** :
+| Emoji | Titre | Message |
+|-------|-------|---------|
+| 🎉 | Bravo ! | Tu as termine toutes tes taches ! |
+| 🏆 | Champion ! | Toutes les etapes sont completees ! |
+| ⭐ | Excellent ! | Mission accomplie avec succes ! |
+| 🚀 | Incroyable ! | Tu as tout dechire ! |
+| 💪 | Super travail ! | Tu peux etre fier de toi ! |
+
+**Son de victoire** : Melodie Do-Mi-Sol-Do (accord majeur ascendant)
+
+**Code JavaScript** :
+```javascript
+function showCelebration() {
+    createConfetti();
+
+    const messages = [
+        { emoji: '🎉', title: 'Bravo !', message: 'Tu as termine toutes tes taches !' },
+        // ... autres messages
+    ];
+
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    // Afficher l'overlay avec le message
+}
+
+function createConfetti() {
+    const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(confetti);
+        }, i * 50);
+    }
+}
+```
+
+**CSS pour les confettis** :
+```css
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    z-index: 1001;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
+
+.celebration-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+```
+
+### 5.3 Minuteur Pomodoro
 
 **Technique Pomodoro** :
 1. Travail pendant 25 minutes
@@ -1018,7 +1103,7 @@ REGLES STRICTES :
 - Compteur de pomodoros completes
 - Statut visuel (travail = vert, pause = orange)
 
-### 5.3 Conseils TDAH
+### 5.4 Conseils TDAH
 
 **Categories** :
 - Tous
@@ -1031,7 +1116,7 @@ REGLES STRICTES :
 - Conseils pre-enregistres filtrable par categorie
 - Generation de conseils personnalises via IA
 
-### 5.4 Fiches de revision
+### 5.5 Fiches de revision
 
 **Sections generees dynamiquement** :
 - **Dates** : Frise chronologique (uniquement pour l'histoire)
@@ -1051,6 +1136,109 @@ REGLES STRICTES :
 - Adaptation du contenu au niveau scolaire
 - Historique des 5 dernieres fiches
 - Sauvegarde dans localStorage
+- **Systeme de feedback** integre pour ameliorer les generations futures
+
+### 5.6 Systeme de feedback (Fiches de revision)
+
+**Objectif** : Collecter les retours utilisateur pour ameliorer les prochaines fiches generees par l'IA.
+
+**Elements de feedback** :
+
+1. **Notation par etoiles (1-5)**
+   - Hover : apercu de la note
+   - Clic : validation de la note
+   - Animation doree avec effet brillant
+
+2. **Tags de feedback** (selection multiple) :
+   | Tag | Description |
+   |-----|-------------|
+   | Trop simple | Le contenu manque de profondeur |
+   | Trop complexe | Le vocabulaire est trop avance |
+   | Manque d'exemples | Besoin d'illustrations concretes |
+   | Manque de details | Explications trop succinctes |
+   | Trop long | Contenu a condenser |
+   | Trop court | Contenu a developper |
+   | Formules incorrectes | Erreurs dans les equations |
+   | Parfait ! | Aucune amelioration necessaire |
+
+3. **Commentaire libre** (optionnel) : Zone de texte pour des retours detailles
+
+**Stockage** : Les 50 derniers feedbacks sont sauvegardes dans `localStorage` sous la cle `fiches-feedback`.
+
+**Utilisation dans le prompt IA** :
+```javascript
+function getFeedbackInstructions() {
+    // Analyse les feedbacks precedents pour le niveau actuel
+    const relevantFeedback = feedbackData.filter(f => f.niveau === niveau);
+
+    // Compte les tags pour identifier les tendances
+    const tagCounts = {};
+    relevantFeedback.forEach(f => {
+        f.tags.forEach(tag => {
+            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        });
+    });
+
+    // Genere des instructions basees sur les retours
+    let instructions = '';
+    if (tagCounts['trop-simple'] > tagCounts['trop-complexe']) {
+        instructions += '- Augmente le niveau de difficulte\n';
+    }
+    if (tagCounts['manque-exemples'] >= 1) {
+        instructions += '- AJOUTE DES EXEMPLES CONCRETS\n';
+    }
+    // ... autres regles
+
+    return instructions;
+}
+```
+
+**Regles d'amelioration automatique** :
+- Si "trop simple" > "trop complexe" → Augmenter la difficulte
+- Si "trop complexe" > "trop simple" → Simplifier le vocabulaire
+- Si "manque d'exemples" ≥ 1 → Ajouter des exemples concrets
+- Si "manque de details" ≥ 1 → Developper les explications
+- Si note moyenne < 3 → Ameliorer significativement la qualite
+- Les 3 derniers commentaires pertinents sont transmis a l'IA
+
+**CSS pour le feedback** :
+```css
+.feedback-section {
+    background: var(--bg-tertiary);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 25px;
+    border: 2px dashed var(--accent-primary);
+}
+
+.star-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s;
+}
+
+.star-btn:hover, .star-btn.active {
+    color: #FFD700;
+    transform: scale(1.2);
+}
+
+.feedback-tag {
+    padding: 8px 14px;
+    border: 2px solid var(--border-color);
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.feedback-tag.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #fff;
+}
+```
 
 ---
 
@@ -1074,9 +1262,19 @@ Le CSS complet est disponible dans le fichier source. Points cles :
 - `.frise-item` : Elements de frise chronologique
 - `.definition-card` : Cartes de definitions
 - `.formule-card` : Cartes de formules
+- `.feedback-section` : Section de feedback
+- `.star-btn` : Boutons etoiles pour notation
+- `.feedback-tag` : Tags de feedback cliquables
+- `.celebration-overlay` : Overlay de felicitations
+- `.confetti` : Elements confettis animes
+- `.niveau-select` : Selecteur de niveau scolaire stylise
 
 ### Animations
 - `.loading-spinner` : Animation de chargement (rotation)
+- `@keyframes fadeIn` : Apparition progressive
+- `@keyframes bounceIn` : Apparition avec rebond
+- `@keyframes bounce` : Rebond continu (emoji)
+- `@keyframes fall` : Chute des confettis
 - Transitions sur les hover (0.3s ease)
 
 ---
@@ -1088,9 +1286,26 @@ Le JavaScript est organise en sections :
 1. **Gestion du theme** : Chargement, basculement, sauvegarde
 2. **Navigation** : Onglets, affichage/masquage du contenu
 3. **Decomposition de taches** : Appel API, parsing, affichage
-4. **Pomodoro** : Timer, notifications, configuration
-5. **Conseils** : Filtrage, generation IA
-6. **Fiches de revision** : Generation, affichage, historique
+4. **Systeme de felicitations** : Confettis, overlay, son de victoire
+5. **Pomodoro** : Timer, notifications, configuration
+6. **Conseils** : Filtrage, generation IA
+7. **Fiches de revision** : Generation, affichage, historique
+8. **Systeme de feedback** : Notation, tags, commentaires, analyse pour prompt IA
+
+### Fonctions principales ajoutees
+
+```javascript
+// Felicitations
+function showCelebration() { /* Affiche popup + confettis */ }
+function closeCelebration() { /* Ferme et nettoie */ }
+function createConfetti() { /* Cree 50 confettis animes */ }
+function playCelebrationSound() { /* Melodie Do-Mi-Sol-Do */ }
+
+// Feedback
+function getFeedbackInstructions() { /* Analyse feedbacks → instructions IA */ }
+function updateStarsDisplay() { /* Met a jour affichage etoiles */ }
+function resetFeedbackForm() { /* Reinitialise le formulaire */ }
+```
 
 ---
 
@@ -1123,6 +1338,44 @@ Modifier les attributs `value` des inputs :
 <input type="number" id="long-break" value="15">
 ```
 
+### Personnaliser les messages de felicitations
+Modifier le tableau `messages` dans la fonction `showCelebration()` :
+```javascript
+const messages = [
+    { emoji: '🎉', title: 'Bravo !', message: 'Tu as termine toutes tes taches !' },
+    { emoji: '🏆', title: 'Champion !', message: 'Toutes les etapes sont completees !' },
+    // Ajouter vos propres messages ici
+];
+```
+
+### Personnaliser les tags de feedback
+Dans le HTML, modifier les boutons dans `.feedback-tags` :
+```html
+<div class="feedback-tags" id="feedback-tags">
+    <button class="feedback-tag" data-tag="mon-tag">Mon tag personnalise</button>
+    <!-- Ajouter d'autres tags -->
+</div>
+```
+
+Puis adapter la fonction `getFeedbackInstructions()` pour gerer les nouveaux tags.
+
+### Modifier le son de victoire
+Dans `playCelebrationSound()`, modifier le tableau `notes` (frequences en Hz) :
+```javascript
+const notes = [523.25, 659.25, 783.99, 1046.50]; // Do Mi Sol Do
+// Exemples d'autres notes :
+// La (440), Si (493.88), Do (523.25), Re (587.33), Mi (659.25)
+```
+
+### Desactiver les felicitations
+Supprimer ou commenter l'appel a `showCelebration()` dans `updateStats()` :
+```javascript
+if (total > 0 && completed === total && !hasShownCelebration) {
+    hasShownCelebration = true;
+    // showCelebration(); // Desactive
+}
+```
+
 ---
 
 ## Conclusion
@@ -1132,6 +1385,31 @@ Ce projet est une application web complete qui utilise :
 - **Puter.js** pour l'intelligence artificielle (gratuit, sans cle API)
 - **localStorage** pour la persistance des donnees
 
+### Fonctionnalites implementees
+
+| Fonctionnalite | Description |
+|----------------|-------------|
+| Decomposition de taches | IA decompose les taches complexes en etapes |
+| Felicitations | Confettis + popup quand tout est coche |
+| Pomodoro | Timer configurable avec notifications |
+| Conseils TDAH | Conseils filtres + generation IA |
+| Fiches de revision | Generees par IA, adaptees au niveau |
+| Feedback | Notation + tags pour ameliorer l'IA |
+| Theme clair/sombre | Basculement manuel ou automatique |
+
+### Donnees sauvegardees (localStorage)
+
+| Cle | Contenu |
+|-----|---------|
+| `tdah-theme` | Theme actuel (dark/light) |
+| `niveau-scolaire` | Niveau scolaire selectionne |
+| `fiches-history` | 10 dernieres fiches generees |
+| `fiches-feedback` | 50 derniers feedbacks |
+
 L'application est entierement contenue dans un seul fichier HTML, ce qui la rend facile a deployer et a partager.
 
 Pour l'utiliser, il suffit d'ouvrir le fichier `assistant_tdah.html` dans un navigateur moderne. Une popup de connexion Puter apparaitra lors de la premiere utilisation d'une fonctionnalite IA.
+
+---
+
+*Documentation mise a jour le 20 janvier 2026*

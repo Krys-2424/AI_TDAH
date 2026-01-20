@@ -843,6 +843,228 @@
             background-color: #ffffff;
             color: #1a1a2e;
         }
+
+        /* Styles pour le feedback */
+        .feedback-section {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 2px dashed var(--accent-primary);
+        }
+
+        .feedback-section h3 {
+            margin-bottom: 20px;
+        }
+
+        .feedback-rating {
+            margin-bottom: 20px;
+        }
+
+        .feedback-rating span {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 8px;
+        }
+
+        .star-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            padding: 5px;
+        }
+
+        .star-btn:hover,
+        .star-btn.active {
+            color: #FFD700;
+            transform: scale(1.2);
+        }
+
+        .star-btn.active {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .feedback-options {
+            margin-bottom: 20px;
+        }
+
+        .feedback-options span {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .feedback-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .feedback-tag {
+            padding: 8px 14px;
+            border: 2px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .feedback-tag:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .feedback-tag.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #fff;
+        }
+
+        .feedback-comment {
+            margin-bottom: 15px;
+        }
+
+        .feedback-comment label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .feedback-comment textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 14px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .feedback-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .feedback-stats {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .feedback-stats strong {
+            color: var(--accent-primary);
+        }
+
+        /* Felicitations */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .celebration-content {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            padding: 40px 60px;
+            border-radius: 20px;
+            text-align: center;
+            animation: bounceIn 0.5s ease;
+            max-width: 90%;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+
+        .celebration-title {
+            font-size: 2em;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .celebration-message {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+        }
+
+        .celebration-close {
+            background: #fff;
+            color: var(--accent-primary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .celebration-close:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            z-index: 1001;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1064,6 +1286,46 @@
                         <h3 class="frise-title">&#128161; Points cles a retenir</h3>
                         <div id="points-list"></div>
                     </div>
+
+                    <!-- Section Feedback -->
+                    <div id="fiche-feedback" class="feedback-section">
+                        <h3 class="frise-title">&#128172; Ton avis sur cette fiche</h3>
+
+                        <div class="feedback-rating">
+                            <span>Cette fiche t'a ete utile ?</span>
+                            <div class="rating-stars" id="rating-stars">
+                                <button class="star-btn" data-rating="1">&#9734;</button>
+                                <button class="star-btn" data-rating="2">&#9734;</button>
+                                <button class="star-btn" data-rating="3">&#9734;</button>
+                                <button class="star-btn" data-rating="4">&#9734;</button>
+                                <button class="star-btn" data-rating="5">&#9734;</button>
+                            </div>
+                        </div>
+
+                        <div class="feedback-options">
+                            <span>Qu'est-ce qui pourrait etre ameliore ?</span>
+                            <div class="feedback-tags" id="feedback-tags">
+                                <button class="feedback-tag" data-tag="trop-simple">Trop simple</button>
+                                <button class="feedback-tag" data-tag="trop-complexe">Trop complexe</button>
+                                <button class="feedback-tag" data-tag="manque-exemples">Manque d'exemples</button>
+                                <button class="feedback-tag" data-tag="manque-details">Manque de details</button>
+                                <button class="feedback-tag" data-tag="trop-long">Trop long</button>
+                                <button class="feedback-tag" data-tag="trop-court">Trop court</button>
+                                <button class="feedback-tag" data-tag="formules-incorrectes">Formules incorrectes</button>
+                                <button class="feedback-tag" data-tag="parfait">Parfait !</button>
+                            </div>
+                        </div>
+
+                        <div class="feedback-comment">
+                            <label for="feedback-text">Commentaire (optionnel) :</label>
+                            <textarea id="feedback-text" placeholder="Dis-nous ce qui manque ou ce qui pourrait etre mieux..."></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" id="btn-submit-feedback" style="margin-top: 10px;">Envoyer mon avis</button>
+                        <div id="feedback-success" class="feedback-success" style="display: none;">
+                            Merci pour ton retour ! On en tiendra compte pour les prochaines fiches.
+                        </div>
+                    </div>
                 </div>
 
                 <div id="fiche-error" class="error" style="display: none;"></div>
@@ -1234,6 +1496,7 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
                 }
 
                 tasks = parseResponse(text);
+                hasShownCelebration = false; // Reinitialiser pour la nouvelle liste
                 console.log('Taches parsees:', tasks);
 
                 if (tasks.length === 0) {
@@ -1308,6 +1571,8 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
             updateStats();
         }
 
+        let hasShownCelebration = false;
+
         function updateStats() {
             const total = tasks.length;
             const completed = tasks.filter(t => t.completed).length;
@@ -1317,6 +1582,106 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
             document.getElementById('completed-tasks').textContent = completed;
             document.getElementById('progress').textContent = progress + '%';
             document.getElementById('task-count').textContent = `${completed}/${total} terminees`;
+
+            // Verifier si toutes les taches sont completees
+            if (total > 0 && completed === total && !hasShownCelebration) {
+                hasShownCelebration = true;
+                showCelebration();
+            }
+        }
+
+        function showCelebration() {
+            // Creer les confettis
+            createConfetti();
+
+            // Creer l'overlay de felicitations
+            const overlay = document.createElement('div');
+            overlay.className = 'celebration-overlay';
+            overlay.id = 'celebration-overlay';
+
+            const messages = [
+                { emoji: '🎉', title: 'Bravo !', message: 'Tu as termine toutes tes taches !' },
+                { emoji: '🏆', title: 'Champion !', message: 'Toutes les etapes sont completees !' },
+                { emoji: '⭐', title: 'Excellent !', message: 'Mission accomplie avec succes !' },
+                { emoji: '🚀', title: 'Incroyable !', message: 'Tu as tout dechire !' },
+                { emoji: '💪', title: 'Super travail !', message: 'Tu peux etre fier de toi !' }
+            ];
+
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+            overlay.innerHTML = `
+                <div class="celebration-content">
+                    <div class="celebration-emoji">${randomMessage.emoji}</div>
+                    <div class="celebration-title">${randomMessage.title}</div>
+                    <div class="celebration-message">${randomMessage.message}</div>
+                    <button class="celebration-close" onclick="closeCelebration()">Continuer</button>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            // Jouer un son de celebration
+            playCelebrationSound();
+        }
+
+        function closeCelebration() {
+            const overlay = document.getElementById('celebration-overlay');
+            if (overlay) {
+                overlay.style.animation = 'fadeIn 0.3s ease reverse';
+                setTimeout(() => overlay.remove(), 300);
+            }
+            // Supprimer les confettis
+            document.querySelectorAll('.confetti').forEach(c => c.remove());
+        }
+
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#fa709a', '#fee140'];
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+
+                    // Supprimer apres l'animation
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 50);
+            }
+        }
+
+        function playCelebrationSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Jouer une melodie simple
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // Do Mi Sol Do (octave superieure)
+                notes.forEach((freq, i) => {
+                    setTimeout(() => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+
+                        oscillator.frequency.value = freq;
+                        oscillator.type = 'sine';
+
+                        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 0.3);
+                    }, i * 150);
+                });
+            } catch (e) {
+                console.log('Son non disponible');
+            }
         }
 
         // Initialiser l'affichage du spiciness
@@ -1698,8 +2063,82 @@ CONSEIL: [ton conseil]`;
             }
         }
 
+        // Charger les feedbacks pour les utiliser dans le prompt
+        let feedbackData = JSON.parse(localStorage.getItem('fiches-feedback') || '[]');
+
+        // Fonction pour analyser les feedbacks et generer des instructions
+        function getFeedbackInstructions() {
+            if (feedbackData.length === 0) return '';
+
+            const niveau = niveauSelect.value;
+            const relevantFeedback = feedbackData.filter(f => f.niveau === niveau);
+
+            if (relevantFeedback.length === 0) return '';
+
+            // Compter les tags
+            const tagCounts = {};
+            relevantFeedback.forEach(f => {
+                f.tags.forEach(tag => {
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                });
+            });
+
+            // Note moyenne
+            const avgRating = relevantFeedback.reduce((sum, f) => sum + f.rating, 0) / relevantFeedback.length;
+
+            // Generer les instructions basees sur les feedbacks
+            let instructions = '\n\nBASE SUR LES RETOURS PRECEDENTS DE L\'UTILISATEUR :\n';
+
+            if ((tagCounts['trop-simple'] || 0) > (tagCounts['trop-complexe'] || 0)) {
+                instructions += '- Augmente le niveau de difficulte et la profondeur des explications\n';
+            } else if ((tagCounts['trop-complexe'] || 0) > (tagCounts['trop-simple'] || 0)) {
+                instructions += '- Simplifie les explications, utilise un vocabulaire plus accessible\n';
+            }
+
+            if ((tagCounts['manque-exemples'] || 0) >= 1) {
+                instructions += '- AJOUTE DES EXEMPLES CONCRETS pour chaque concept\n';
+            }
+
+            if ((tagCounts['manque-details'] || 0) >= 1) {
+                instructions += '- Developpe davantage les explications avec plus de details\n';
+            }
+
+            if ((tagCounts['trop-long'] || 0) > (tagCounts['trop-court'] || 0)) {
+                instructions += '- Sois plus concis, va a l\'essentiel\n';
+            } else if ((tagCounts['trop-court'] || 0) > (tagCounts['trop-long'] || 0)) {
+                instructions += '- Developpe davantage chaque point\n';
+            }
+
+            if ((tagCounts['formules-incorrectes'] || 0) > 0) {
+                instructions += '- VERIFIE ATTENTIVEMENT l\'exactitude des formules\n';
+            }
+
+            if (avgRating < 3) {
+                instructions += '- L\'utilisateur a donne des notes basses, ameliore significativement la qualite\n';
+            }
+
+            // Ajouter les derniers commentaires pertinents
+            const recentComments = relevantFeedback
+                .filter(f => f.comment && f.comment.length > 10)
+                .slice(-3)
+                .map(f => f.comment);
+
+            if (recentComments.length > 0) {
+                instructions += '\nCOMMENTAIRES RECENTS DE L\'UTILISATEUR :\n';
+                recentComments.forEach(c => {
+                    instructions += `- "${c}"\n`;
+                });
+            }
+
+            return instructions;
+        }
+
+        // Variable pour stocker le sujet actuel
+        let currentFicheSubject = '';
+
         btnGenerateFiche.addEventListener('click', async () => {
             const sujet = revisionInput.value.trim();
+            currentFicheSubject = sujet;
             if (!sujet) {
                 alert('Indique le sujet que tu veux reviser !');
                 return;
@@ -1720,6 +2159,9 @@ CONSEIL: [ton conseil]`;
                     'bts': 'BTS/DUT - niveau post-bac, applications professionnelles',
                     'licence': 'Licence/Prepa - niveau universitaire, rigueur scientifique'
                 };
+
+                // Recuperer les instructions basees sur les feedbacks precedents
+                const feedbackInstructions = getFeedbackInstructions();
 
                 const prompt = `Tu es un assistant pedagogique expert.
 
@@ -1753,7 +2195,7 @@ REGLES STRICTES :
 - "points" : TOUJOURS inclure (adapte au niveau)
 - Si une section n'est pas pertinente au SUJET, NE PAS l'inclure
 - Maximum 6 elements par section
-- JSON uniquement, sans texte avant ou apres`;
+- JSON uniquement, sans texte avant ou apres${feedbackInstructions}`;
 
                 const response = await puter.ai.chat(prompt);
 
@@ -1805,6 +2247,120 @@ REGLES STRICTES :
             ficheLoading.style.display = 'none';
             btnGenerateFiche.disabled = false;
         });
+
+        // =============================================
+        // SYSTEME DE FEEDBACK
+        // =============================================
+        let currentRating = 0;
+        let selectedTags = [];
+
+        // Elements feedback
+        const ratingStars = document.querySelectorAll('.star-btn');
+        const feedbackTags = document.querySelectorAll('.feedback-tag');
+        const feedbackText = document.getElementById('feedback-text');
+        const btnSubmitFeedback = document.getElementById('btn-submit-feedback');
+        const feedbackSuccess = document.getElementById('feedback-success');
+        const ficheFeedback = document.getElementById('fiche-feedback');
+
+        // Gestion des etoiles
+        ratingStars.forEach(star => {
+            star.addEventListener('click', () => {
+                currentRating = parseInt(star.dataset.rating);
+                updateStarsDisplay();
+            });
+
+            star.addEventListener('mouseenter', () => {
+                const rating = parseInt(star.dataset.rating);
+                ratingStars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.innerHTML = '&#9733;'; // Etoile pleine
+                        s.style.color = '#FFD700';
+                    } else {
+                        s.innerHTML = '&#9734;'; // Etoile vide
+                        s.style.color = 'var(--text-muted)';
+                    }
+                });
+            });
+
+            star.addEventListener('mouseleave', () => {
+                updateStarsDisplay();
+            });
+        });
+
+        function updateStarsDisplay() {
+            ratingStars.forEach((s, index) => {
+                if (index < currentRating) {
+                    s.innerHTML = '&#9733;';
+                    s.style.color = '#FFD700';
+                    s.classList.add('active');
+                } else {
+                    s.innerHTML = '&#9734;';
+                    s.style.color = 'var(--text-muted)';
+                    s.classList.remove('active');
+                }
+            });
+        }
+
+        // Gestion des tags
+        feedbackTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const tagValue = tag.dataset.tag;
+                if (selectedTags.includes(tagValue)) {
+                    selectedTags = selectedTags.filter(t => t !== tagValue);
+                    tag.classList.remove('active');
+                } else {
+                    selectedTags.push(tagValue);
+                    tag.classList.add('active');
+                }
+            });
+        });
+
+        // Reset du feedback pour une nouvelle fiche
+        function resetFeedbackForm() {
+            currentRating = 0;
+            selectedTags = [];
+            feedbackText.value = '';
+            feedbackSuccess.style.display = 'none';
+            btnSubmitFeedback.disabled = false;
+            btnSubmitFeedback.textContent = 'Envoyer mon avis';
+            updateStarsDisplay();
+            feedbackTags.forEach(tag => tag.classList.remove('active'));
+        }
+
+        // Soumettre le feedback
+        btnSubmitFeedback.addEventListener('click', () => {
+            if (currentRating === 0) {
+                alert('Merci de donner une note avec les etoiles !');
+                return;
+            }
+
+            const feedback = {
+                sujet: currentFicheSubject,
+                niveau: niveauSelect.value,
+                rating: currentRating,
+                tags: selectedTags,
+                comment: feedbackText.value.trim(),
+                date: new Date().toISOString()
+            };
+
+            feedbackData.push(feedback);
+            // Garder les 50 derniers feedbacks
+            if (feedbackData.length > 50) {
+                feedbackData = feedbackData.slice(-50);
+            }
+            localStorage.setItem('fiches-feedback', JSON.stringify(feedbackData));
+
+            feedbackSuccess.style.display = 'block';
+            btnSubmitFeedback.disabled = true;
+            btnSubmitFeedback.textContent = 'Avis envoye !';
+        });
+
+        // Modifier la fonction displayFicheData pour reset le feedback
+        const originalDisplayFicheData = displayFicheData;
+        displayFicheData = function(data) {
+            originalDisplayFicheData(data);
+            resetFeedbackForm();
+        };
     </script>
 </body>
 </html>
