@@ -1107,7 +1107,8 @@
         <div class="results-section" id="results-section">
             <div class="loading" id="loading" style="display: none;">
                 <div class="loading-spinner"></div>
-                <p>Analyse en cours avec l'IA...</p>
+                <p>Connexion a l'IA...</p>
+                <p style="font-size: 0.85em; color: var(--text-secondary); margin-top: 10px;">Cela peut prendre jusqu'a 45 secondes</p>
             </div>
 
             <div id="results-content">
@@ -1259,7 +1260,8 @@
 
                 <div id="fiche-loading" class="loading" style="display: none;">
                     <div class="loading-spinner"></div>
-                    <p>Generation de ta fiche personnalisee...</p>
+                    <p>Connexion a l'IA...</p>
+                    <p style="font-size: 0.85em; color: var(--text-secondary); margin-top: 10px;">Cela peut prendre jusqu'a 45 secondes</p>
                 </div>
 
                 <div id="fiche-content" style="display: none;">
@@ -1402,6 +1404,80 @@
             5: { label: "Ultra-detaille", emoji: "", description: "10-12 mini-etapes" }
         };
 
+        // =============================================
+        // FONCTION PUTER.AI AVEC TIMEOUT ET RETRY
+        // =============================================
+        const PUTER_TIMEOUT = 45000; // 45 secondes max
+        const PUTER_RETRY_COUNT = 2; // 2 tentatives max
+
+        async function puterAiChatWithTimeout(prompt, timeoutMs = PUTER_TIMEOUT) {
+            // Verifier que puter est disponible
+            if (typeof puter === 'undefined') {
+                throw new Error('Puter.js non charge. Verifie ta connexion internet et rafraichis la page.');
+            }
+
+            // Creer une promesse avec timeout
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => {
+                    reject(new Error('Delai depasse (45s). Le service IA est peut-etre surcharge. Reessaie dans quelques instants.'));
+                }, timeoutMs);
+            });
+
+            // Executer la requete avec timeout
+            const response = await Promise.race([
+                puter.ai.chat(prompt),
+                timeoutPromise
+            ]);
+
+            return response;
+        }
+
+        async function puterAiChatWithRetry(prompt, loadingElement = null) {
+            let lastError = null;
+            const loadingMessages = [
+                'Connexion a l\'IA...',
+                'Generation en cours...',
+                'L\'IA reflechit...',
+                'Encore un instant...',
+                'Presque termine...'
+            ];
+            let messageIndex = 0;
+            let loadingInterval = null;
+
+            // Afficher des messages progressifs
+            if (loadingElement) {
+                loadingInterval = setInterval(() => {
+                    const loadingText = loadingElement.querySelector('p');
+                    if (loadingText && messageIndex < loadingMessages.length) {
+                        loadingText.textContent = loadingMessages[messageIndex];
+                        messageIndex++;
+                    }
+                }, 8000);
+            }
+
+            try {
+                for (let attempt = 1; attempt <= PUTER_RETRY_COUNT; attempt++) {
+                    try {
+                        console.log(`Tentative ${attempt}/${PUTER_RETRY_COUNT}...`);
+                        const response = await puterAiChatWithTimeout(prompt);
+                        return response;
+                    } catch (error) {
+                        lastError = error;
+                        console.warn(`Tentative ${attempt} echouee:`, error.message);
+                        if (attempt < PUTER_RETRY_COUNT) {
+                            // Attendre 2 secondes avant de reessayer
+                            await new Promise(r => setTimeout(r, 2000));
+                        }
+                    }
+                }
+                throw lastError;
+            } finally {
+                if (loadingInterval) {
+                    clearInterval(loadingInterval);
+                }
+            }
+        }
+
         const spicinessSlider = document.getElementById('spiciness-slider');
         const spicinessValue = document.getElementById('spiciness-value');
         const spicinessDisplay = document.getElementById('spiciness-display');
@@ -1460,12 +1536,7 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
 
                 console.log('Envoi du prompt a Puter...');
 
-                // Verifier que puter est disponible
-                if (typeof puter === 'undefined') {
-                    throw new Error('Puter.js non charge. Verifie ta connexion internet.');
-                }
-
-                const response = await puter.ai.chat(prompt);
+                const response = await puterAiChatWithRetry(prompt, loading);
                 console.log('Reponse brute:', response);
                 console.log('Type de reponse:', typeof response);
                 console.log('Cles de response:', response ? Object.keys(response) : 'null');
@@ -1898,7 +1969,8 @@ REPONDS avec ce format exact :
 TITRE: [titre court du conseil]
 CONSEIL: [ton conseil]`;
 
-                const response = await puter.ai.chat(prompt);
+                const conseilLoading = conseilIaContainer.querySelector('.loading');
+                const response = await puterAiChatWithRetry(prompt, conseilLoading);
 
                 let text = '';
                 if (typeof response === 'string') {
@@ -2197,7 +2269,7 @@ REGLES STRICTES :
 - Maximum 6 elements par section
 - JSON uniquement, sans texte avant ou apres${feedbackInstructions}`;
 
-                const response = await puter.ai.chat(prompt);
+                const response = await puterAiChatWithRetry(prompt, ficheLoading);
 
                 let text = '';
                 if (typeof response === 'string') {
