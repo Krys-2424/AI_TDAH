@@ -73,10 +73,9 @@
         }
 
         /* Bouton de theme */
-        .theme-toggle {
+        .theme-toggle, .lang-toggle {
             position: fixed;
             top: 20px;
-            right: 20px;
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -93,7 +92,17 @@
             z-index: 1000;
         }
 
-        .theme-toggle:hover {
+        .theme-toggle {
+            right: 20px;
+        }
+
+        .lang-toggle {
+            right: 80px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 20px var(--shadow-color);
         }
@@ -1068,6 +1077,11 @@
     </style>
 </head>
 <body>
+    <!-- Bouton de basculement langue -->
+    <button class="lang-toggle" id="lang-toggle" title="Switch to English">
+        <span id="lang-icon">EN</span>
+    </button>
+
     <!-- Bouton de basculement theme -->
     <button class="theme-toggle" id="theme-toggle" title="Changer de theme">
         <span id="theme-icon">&#9790;</span>
@@ -1396,6 +1410,446 @@
             }
         });
 
+        // =============================================
+        // GESTION DE LA LANGUE FR/EN
+        // =============================================
+        const langToggle = document.getElementById('lang-toggle');
+        const langIcon = document.getElementById('lang-icon');
+        let currentLang = 'fr';
+
+        const translations = {
+            fr: {
+                // Header
+                'title': 'Assistant TDAH Intelligent',
+                'subtitle': 'Decompose tes taches, gere ton temps et decouvre des conseils adaptes',
+                // Tabs
+                'tab-taches': 'Taches',
+                'tab-pomodoro': 'Pomodoro',
+                'tab-conseils': 'Conseils',
+                'tab-connaitre': 'A connaitre',
+                // Taches section
+                'task-label': 'Decris ta tache :',
+                'task-placeholder': 'Ex: Faire ma dissertation de francais sur le romantisme pour lundi...',
+                'detail-level': 'Niveau de detail',
+                'decompose-btn': 'Decomposer ma tache',
+                'your-plan': 'Ton plan de travail',
+                'steps': 'Etapes',
+                'completed': 'Terminees',
+                'progress': 'Progression',
+                'connecting-ai': 'Connexion a l\'IA...',
+                'ai-wait': 'Cela peut prendre jusqu\'a 45 secondes',
+                // Spiciness levels
+                'spicy-1': 'Minimaliste - 3-4 grandes etapes',
+                'spicy-2': 'Simplifie - 4-6 etapes principales',
+                'spicy-3': 'Equilibre - 6-8 etapes detaillees',
+                'spicy-4': 'Detaille - 8-10 micro-etapes',
+                'spicy-5': 'Ultra-detaille - 10-12 mini-etapes',
+                // Pomodoro
+                'pomodoro-title': 'Minuteur Pomodoro',
+                'ready-work': 'Pret a travailler',
+                'work-time': 'Travail (min)',
+                'short-break': 'Pause courte (min)',
+                'long-break': 'Pause longue (min)',
+                'pomodoros-done': 'Pomodoros completes :',
+                'start': 'Demarrer',
+                'pause': 'Pause',
+                'reset': 'Reinitialiser',
+                'work-session': 'Temps de travail - Concentre-toi !',
+                'break-session': 'Pause',
+                'long-break-msg': 'Pause longue - Tu l\'as bien merite !',
+                'short-break-msg': 'Pause courte - Detends-toi !',
+                'paused': 'En pause',
+                'notif-work': 'C\'est l\'heure de travailler !',
+                'notif-break': 'Pause terminee, c\'est reparti !',
+                // Conseils
+                'conseils-title': 'Conseils TDAH',
+                'all': 'Tous',
+                'concentration': 'Concentration',
+                'organisation': 'Organisation',
+                'motivation': 'Motivation',
+                'stress-management': 'Gestion du stress',
+                'get-ai-conseil': 'Obtenir un conseil personnalise (IA)',
+                // Conseil cards
+                'conseil-1-title': 'La regle des 2 minutes',
+                'conseil-1-text': 'Si une tache prend moins de 2 minutes, fais-la immediatement. Cela evite l\'accumulation de petites taches qui encombrent ton esprit.',
+                'conseil-2-title': 'Un seul endroit pour tout noter',
+                'conseil-2-text': 'Utilise un seul carnet ou une seule application pour toutes tes notes. Evite d\'eparpiller tes idees sur plusieurs supports.',
+                'conseil-3-title': 'Elimine les distractions',
+                'conseil-3-text': 'Mets ton telephone en mode avion, ferme les onglets inutiles, et previens ton entourage que tu travailles. Chaque interruption te coute 20 minutes de reconcentration.',
+                'conseil-4-title': 'Recompense-toi',
+                'conseil-4-text': 'Apres chaque tache accomplie, accorde-toi une petite recompense : une pause, un snack, ou quelques minutes sur ton activite preferee.',
+                'conseil-5-title': 'La respiration 4-7-8',
+                'conseil-5-text': 'Inspire pendant 4 secondes, retiens ta respiration 7 secondes, expire pendant 8 secondes. Repete 3 fois pour calmer rapidement ton anxiete.',
+                'conseil-6-title': 'Prepare la veille',
+                'conseil-6-text': 'Chaque soir, prepare tes affaires et note les 3 taches prioritaires du lendemain. Tu gagneras du temps et de l\'energie mentale le matin.',
+                'conseil-7-title': 'Commence par le plus difficile',
+                'conseil-7-text': 'Tackle ta tache la plus redoutee en premier, quand ton energie est au maximum. Le reste de la journee te semblera plus facile.',
+                'conseil-8-title': 'Le body doubling',
+                'conseil-8-text': 'Travaille en presence d\'une autre personne (meme en visio). La presence d\'autrui aide a maintenir la concentration et la motivation.',
+                'conseil-9-title': 'Accepte l\'imperfection',
+                'conseil-9-text': 'Mieux vaut une tache terminee a 80% qu\'une tache parfaite jamais finie. Le perfectionnisme est souvent l\'ennemi de la productivite.',
+                'conseil-10-title': 'Utilise des alarmes',
+                'conseil-10-text': 'Programme des rappels pour les taches importantes, les rendez-vous, et meme les pauses. Ton cerveau TDAH a besoin de signaux externes.',
+                // A connaitre
+                'revision-title': 'Fiches de revision personnalisees',
+                'revision-label': 'Quel sujet veux-tu reviser ?',
+                'revision-placeholder': 'Ex: La Revolution francaise, Les equations du second degre, Le romantisme en litterature, Les protocoles reseau TCP/IP...',
+                'level-label': 'Ton niveau scolaire :',
+                'level-college': 'College (6e - 3e)',
+                'level-seconde': 'Seconde',
+                'level-premiere': 'Premiere',
+                'level-terminale': 'Terminale',
+                'level-bts': 'BTS / DUT',
+                'level-licence': 'Licence / Prepa',
+                'generate-fiche': 'Generer ma fiche de revision',
+                'dates-title': 'Dates importantes',
+                'definitions-title': 'Definitions cles',
+                'formulas-title': 'Formules essentielles',
+                'keypoints-title': 'Points cles a retenir',
+                'previous-fiches': 'Fiches precedentes',
+                // Feedback
+                'feedback-title': 'Ton avis sur cette fiche',
+                'feedback-useful': 'Cette fiche t\'a ete utile ?',
+                'feedback-improve': 'Qu\'est-ce qui pourrait etre ameliore ?',
+                'feedback-simple': 'Trop simple',
+                'feedback-complex': 'Trop complexe',
+                'feedback-examples': 'Manque d\'exemples',
+                'feedback-details': 'Manque de details',
+                'feedback-long': 'Trop long',
+                'feedback-short': 'Trop court',
+                'feedback-formulas': 'Formules incorrectes',
+                'feedback-perfect': 'Parfait !',
+                'feedback-comment': 'Commentaire (optionnel) :',
+                'feedback-comment-placeholder': 'Dis-nous ce qui manque ou ce qui pourrait etre mieux...',
+                'send-feedback': 'Envoyer mon avis',
+                'feedback-thanks': 'Merci pour ton retour ! On en tiendra compte pour les prochaines fiches.',
+                'feedback-sent': 'Avis envoye !',
+                'feedback-rate-alert': 'Merci de donner une note avec les etoiles !',
+                // Alerts
+                'alert-task': 'Decris ta tache avant de la decomposer !',
+                'alert-subject': 'Indique le sujet que tu veux reviser !',
+                // Toggle titles
+                'switch-to-en': 'Switch to English',
+                'switch-to-fr': 'Passer en francais',
+                'switch-dark': 'Passer en mode sombre',
+                'switch-light': 'Passer en mode clair'
+            },
+            en: {
+                // Header
+                'title': 'Smart ADHD Assistant',
+                'subtitle': 'Break down your tasks, manage your time and discover adapted tips',
+                // Tabs
+                'tab-taches': 'Tasks',
+                'tab-pomodoro': 'Pomodoro',
+                'tab-conseils': 'Tips',
+                'tab-connaitre': 'Study Cards',
+                // Taches section
+                'task-label': 'Describe your task:',
+                'task-placeholder': 'Ex: Write my French essay about romanticism for Monday...',
+                'detail-level': 'Detail level',
+                'decompose-btn': 'Break down my task',
+                'your-plan': 'Your work plan',
+                'steps': 'Steps',
+                'completed': 'Completed',
+                'progress': 'Progress',
+                'connecting-ai': 'Connecting to AI...',
+                'ai-wait': 'This may take up to 45 seconds',
+                // Spiciness levels
+                'spicy-1': 'Minimalist - 3-4 main steps',
+                'spicy-2': 'Simplified - 4-6 main steps',
+                'spicy-3': 'Balanced - 6-8 detailed steps',
+                'spicy-4': 'Detailed - 8-10 micro-steps',
+                'spicy-5': 'Ultra-detailed - 10-12 mini-steps',
+                // Pomodoro
+                'pomodoro-title': 'Pomodoro Timer',
+                'ready-work': 'Ready to work',
+                'work-time': 'Work (min)',
+                'short-break': 'Short break (min)',
+                'long-break': 'Long break (min)',
+                'pomodoros-done': 'Completed pomodoros:',
+                'start': 'Start',
+                'pause': 'Pause',
+                'reset': 'Reset',
+                'work-session': 'Work time - Stay focused!',
+                'break-session': 'Break',
+                'long-break-msg': 'Long break - You earned it!',
+                'short-break-msg': 'Short break - Relax!',
+                'paused': 'Paused',
+                'notif-work': 'Time to work!',
+                'notif-break': 'Break is over, let\'s go!',
+                // Conseils
+                'conseils-title': 'ADHD Tips',
+                'all': 'All',
+                'concentration': 'Focus',
+                'organisation': 'Organization',
+                'motivation': 'Motivation',
+                'stress-management': 'Stress Management',
+                'get-ai-conseil': 'Get a personalized tip (AI)',
+                // Conseil cards
+                'conseil-1-title': 'The 2-minute rule',
+                'conseil-1-text': 'If a task takes less than 2 minutes, do it immediately. This prevents small tasks from piling up and cluttering your mind.',
+                'conseil-2-title': 'One place for all notes',
+                'conseil-2-text': 'Use a single notebook or app for all your notes. Avoid scattering your ideas across multiple platforms.',
+                'conseil-3-title': 'Eliminate distractions',
+                'conseil-3-text': 'Put your phone on airplane mode, close unnecessary tabs, and let others know you\'re working. Each interruption costs you 20 minutes to refocus.',
+                'conseil-4-title': 'Reward yourself',
+                'conseil-4-text': 'After completing each task, give yourself a small reward: a break, a snack, or a few minutes on your favorite activity.',
+                'conseil-5-title': 'The 4-7-8 breathing',
+                'conseil-5-text': 'Inhale for 4 seconds, hold your breath for 7 seconds, exhale for 8 seconds. Repeat 3 times to quickly calm your anxiety.',
+                'conseil-6-title': 'Prepare the night before',
+                'conseil-6-text': 'Each evening, prepare your things and note the 3 priority tasks for tomorrow. You\'ll save time and mental energy in the morning.',
+                'conseil-7-title': 'Start with the hardest',
+                'conseil-7-text': 'Tackle your most dreaded task first, when your energy is at its peak. The rest of the day will feel easier.',
+                'conseil-8-title': 'Body doubling',
+                'conseil-8-text': 'Work in the presence of another person (even via video call). The presence of others helps maintain focus and motivation.',
+                'conseil-9-title': 'Accept imperfection',
+                'conseil-9-text': 'A task completed at 80% is better than a perfect task never finished. Perfectionism is often the enemy of productivity.',
+                'conseil-10-title': 'Use alarms',
+                'conseil-10-text': 'Set reminders for important tasks, appointments, and even breaks. Your ADHD brain needs external signals.',
+                // A connaitre
+                'revision-title': 'Personalized study cards',
+                'revision-label': 'What subject do you want to study?',
+                'revision-placeholder': 'Ex: The French Revolution, Quadratic equations, Romanticism in literature, TCP/IP network protocols...',
+                'level-label': 'Your education level:',
+                'level-college': 'Middle School',
+                'level-seconde': '10th Grade',
+                'level-premiere': '11th Grade',
+                'level-terminale': '12th Grade',
+                'level-bts': 'Associate Degree',
+                'level-licence': 'Bachelor / Prep',
+                'generate-fiche': 'Generate my study card',
+                'dates-title': 'Important dates',
+                'definitions-title': 'Key definitions',
+                'formulas-title': 'Essential formulas',
+                'keypoints-title': 'Key points to remember',
+                'previous-fiches': 'Previous cards',
+                // Feedback
+                'feedback-title': 'Your feedback on this card',
+                'feedback-useful': 'Was this card helpful?',
+                'feedback-improve': 'What could be improved?',
+                'feedback-simple': 'Too simple',
+                'feedback-complex': 'Too complex',
+                'feedback-examples': 'Needs examples',
+                'feedback-details': 'Needs more details',
+                'feedback-long': 'Too long',
+                'feedback-short': 'Too short',
+                'feedback-formulas': 'Incorrect formulas',
+                'feedback-perfect': 'Perfect!',
+                'feedback-comment': 'Comment (optional):',
+                'feedback-comment-placeholder': 'Tell us what\'s missing or what could be better...',
+                'send-feedback': 'Send my feedback',
+                'feedback-thanks': 'Thanks for your feedback! We\'ll take it into account for future cards.',
+                'feedback-sent': 'Feedback sent!',
+                'feedback-rate-alert': 'Please rate with the stars!',
+                // Alerts
+                'alert-task': 'Describe your task before breaking it down!',
+                'alert-subject': 'Enter the subject you want to study!',
+                // Toggle titles
+                'switch-to-en': 'Switch to English',
+                'switch-to-fr': 'Passer en francais',
+                'switch-dark': 'Switch to dark mode',
+                'switch-light': 'Switch to light mode'
+            }
+        };
+
+        function loadLang() {
+            const savedLang = localStorage.getItem('tdah-lang') || 'fr';
+            currentLang = savedLang;
+            applyTranslations(savedLang);
+            updateLangIcon(savedLang);
+        }
+
+        function updateLangIcon(lang) {
+            if (lang === 'fr') {
+                langIcon.textContent = 'EN';
+                langToggle.title = translations.fr['switch-to-en'];
+            } else {
+                langIcon.textContent = 'FR';
+                langToggle.title = translations.en['switch-to-fr'];
+            }
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'fr' ? 'en' : 'fr';
+            localStorage.setItem('tdah-lang', currentLang);
+            applyTranslations(currentLang);
+            updateLangIcon(currentLang);
+        }
+
+        function applyTranslations(lang) {
+            const t = translations[lang];
+
+            // Helper function pour eviter les erreurs null
+            const setText = (selector, key) => {
+                const el = document.querySelector(selector);
+                if (el && t[key]) el.textContent = t[key];
+            };
+            const setTextById = (id, key) => {
+                const el = document.getElementById(id);
+                if (el && t[key]) el.textContent = t[key];
+            };
+            const setPlaceholder = (id, key) => {
+                const el = document.getElementById(id);
+                if (el && t[key]) el.placeholder = t[key];
+            };
+
+            // Title et subtitle
+            setText('header h1', 'title');
+            setText('header p', 'subtitle');
+            document.title = t['title'];
+
+            // Tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                const tabName = tab.dataset.tab;
+                if (tabName === 'taches') tab.textContent = t['tab-taches'];
+                if (tabName === 'pomodoro') tab.textContent = t['tab-pomodoro'];
+                if (tabName === 'conseils') tab.textContent = t['tab-conseils'];
+                if (tabName === 'connaitre') tab.textContent = t['tab-connaitre'];
+            });
+
+            // Taches section
+            setText('label[for="task-input"]', 'task-label');
+            setPlaceholder('task-input', 'task-placeholder');
+            setText('.spiciness-label span:first-child', 'detail-level');
+            setTextById('decompose-btn', 'decompose-btn');
+            setText('.results-header h2', 'your-plan');
+
+            // Stats labels
+            const statLabels = document.querySelectorAll('.stat-label');
+            if (statLabels[0]) statLabels[0].textContent = t['steps'];
+            if (statLabels[1]) statLabels[1].textContent = t['completed'];
+            if (statLabels[2]) statLabels[2].textContent = t['progress'];
+
+            // Loading
+            const loadingP = document.querySelectorAll('#loading p');
+            if (loadingP[0]) loadingP[0].textContent = t['connecting-ai'];
+            if (loadingP[1]) loadingP[1].textContent = t['ai-wait'];
+
+            // Pomodoro
+            setText('#tab-pomodoro h2', 'pomodoro-title');
+            setTextById('timer-status', 'ready-work');
+            setTextById('btn-start', 'start');
+            setTextById('btn-pause', 'pause');
+            setTextById('btn-reset', 'reset');
+
+            const settingLabels = document.querySelectorAll('.setting-item label');
+            if (settingLabels[0]) settingLabels[0].textContent = t['work-time'];
+            if (settingLabels[1]) settingLabels[1].textContent = t['short-break'];
+            if (settingLabels[2]) settingLabels[2].textContent = t['long-break'];
+
+            const pomodoroCountEl = document.querySelector('.pomodoro-count');
+            if (pomodoroCountEl) {
+                const countSpan = pomodoroCountEl.querySelector('span');
+                const countValue = countSpan ? countSpan.textContent : '0';
+                pomodoroCountEl.innerHTML = t['pomodoros-done'] + ' <span id="pomodoro-count">' + countValue + '</span>';
+            }
+
+            // Conseils
+            setText('#tab-conseils h2', 'conseils-title');
+            setTextById('btn-new-conseil', 'get-ai-conseil');
+
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                const cat = btn.dataset.category;
+                if (cat === 'tous') btn.textContent = t['all'];
+                if (cat === 'concentration') btn.textContent = t['concentration'];
+                if (cat === 'organisation') btn.textContent = t['organisation'];
+                if (cat === 'motivation') btn.textContent = t['motivation'];
+                if (cat === 'gestion-stress') btn.textContent = t['stress-management'];
+            });
+
+            // Conseil cards
+            const conseilCards = document.querySelectorAll('.conseil-card');
+            conseilCards.forEach((card, index) => {
+                const h3 = card.querySelector('h3');
+                const p = card.querySelector('p');
+                const num = index + 1;
+                if (h3 && t['conseil-' + num + '-title']) h3.textContent = t['conseil-' + num + '-title'];
+                if (p && t['conseil-' + num + '-text']) p.textContent = t['conseil-' + num + '-text'];
+            });
+
+            // A connaitre
+            setText('#tab-connaitre h2', 'revision-title');
+            setText('label[for="revision-input"]', 'revision-label');
+            setPlaceholder('revision-input', 'revision-placeholder');
+            setText('label[for="niveau-select"]', 'level-label');
+
+            const niveauOptions = document.querySelectorAll('#niveau-select option');
+            const levelKeys = ['level-college', 'level-seconde', 'level-premiere', 'level-terminale', 'level-bts', 'level-licence'];
+            niveauOptions.forEach((opt, i) => {
+                if (levelKeys[i] && t[levelKeys[i]]) opt.textContent = t[levelKeys[i]];
+            });
+
+            setTextById('btn-generate-fiche', 'generate-fiche');
+
+            // Fiche loading
+            const ficheLoadingP = document.querySelectorAll('#fiche-loading p');
+            if (ficheLoadingP[0]) ficheLoadingP[0].textContent = t['connecting-ai'];
+            if (ficheLoadingP[1]) ficheLoadingP[1].textContent = t['ai-wait'];
+
+            // Fiche titles
+            const ficheDatesTitle = document.querySelector('#fiche-dates .frise-title');
+            if (ficheDatesTitle) ficheDatesTitle.innerHTML = '&#128197; ' + t['dates-title'];
+            const ficheDefsTitle = document.querySelector('#fiche-definitions .frise-title');
+            if (ficheDefsTitle) ficheDefsTitle.innerHTML = '&#128213; ' + t['definitions-title'];
+            const ficheFormTitle = document.querySelector('#fiche-formules .frise-title');
+            if (ficheFormTitle) ficheFormTitle.innerHTML = '&#128290; ' + t['formulas-title'];
+            const fichePointsTitle = document.querySelector('#fiche-points .frise-title');
+            if (fichePointsTitle) fichePointsTitle.innerHTML = '&#128161; ' + t['keypoints-title'];
+
+            // Feedback section
+            const feedbackTitle = document.querySelector('#fiche-feedback .frise-title');
+            if (feedbackTitle) feedbackTitle.innerHTML = '&#128172; ' + t['feedback-title'];
+
+            const feedbackUseful = document.querySelector('.feedback-rating span');
+            if (feedbackUseful) feedbackUseful.textContent = t['feedback-useful'];
+
+            const feedbackImprove = document.querySelector('.feedback-options span');
+            if (feedbackImprove) feedbackImprove.textContent = t['feedback-improve'];
+
+            const feedbackTagsEl = document.querySelectorAll('.feedback-tag');
+            const tagKeys = ['feedback-simple', 'feedback-complex', 'feedback-examples', 'feedback-details', 'feedback-long', 'feedback-short', 'feedback-formulas', 'feedback-perfect'];
+            feedbackTagsEl.forEach((tag, i) => {
+                if (tagKeys[i] && t[tagKeys[i]]) tag.textContent = t[tagKeys[i]];
+            });
+
+            const feedbackCommentLabel = document.querySelector('.feedback-comment label');
+            if (feedbackCommentLabel) feedbackCommentLabel.textContent = t['feedback-comment'];
+            const feedbackTextEl = document.getElementById('feedback-text');
+            if (feedbackTextEl) feedbackTextEl.placeholder = t['feedback-comment-placeholder'];
+
+            const btnFeedback = document.getElementById('btn-submit-feedback');
+            if (btnFeedback) {
+                if (!btnFeedback.disabled) {
+                    btnFeedback.textContent = t['send-feedback'];
+                } else {
+                    btnFeedback.textContent = t['feedback-sent'];
+                }
+            }
+
+            const feedbackSuccessEl = document.getElementById('feedback-success');
+            if (feedbackSuccessEl) feedbackSuccessEl.textContent = t['feedback-thanks'];
+
+            // Historique
+            const historiqueTitle = document.querySelector('#fiches-historique h3');
+            if (historiqueTitle) historiqueTitle.textContent = t['previous-fiches'];
+
+            // Update spiciness display
+            updateSpicinessDisplay();
+        }
+
+        function updateSpicinessDisplay() {
+            const slider = document.getElementById('spiciness-slider');
+            const display = document.getElementById('spiciness-display');
+            if (slider && display) {
+                const value = slider.value;
+                const t = translations[currentLang];
+                display.textContent = t['spicy-' + value];
+            }
+        }
+
+        langToggle.addEventListener('click', toggleLang);
+
         const SPICINESS_CONFIG = {
             1: { label: "Minimaliste", emoji: "", description: "3-4 grandes etapes" },
             2: { label: "Simplifie", emoji: "", description: "4-6 etapes principales" },
@@ -1494,14 +1948,13 @@
         spicinessSlider.addEventListener('input', () => {
             const value = spicinessSlider.value;
             spicinessValue.textContent = value;
-            const config = SPICINESS_CONFIG[value];
-            spicinessDisplay.textContent = `${config.emoji} ${config.label} - ${config.description}`;
+            updateSpicinessDisplay();
         });
 
         decomposeBtn.addEventListener('click', async () => {
             const task = taskInput.value.trim();
             if (!task) {
-                alert('Decris ta tache avant de la decomposer !');
+                alert(translations[currentLang]['alert-task']);
                 return;
             }
 
@@ -1836,6 +2289,16 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
             btnStart.style.display = 'none';
             btnPause.style.display = 'inline-block';
 
+            // Update status text based on current mode
+            const t = translations[currentLang];
+            if (pomodoroMode === 'work') {
+                timerStatus.textContent = t['work-session'];
+                timerStatus.className = 'timer-status work';
+            } else {
+                timerStatus.textContent = pomodoroMode === 'longBreak' ? t['long-break-msg'] : t['short-break-msg'];
+                timerStatus.className = 'timer-status break';
+            }
+
             pomodoroInterval = setInterval(() => {
                 pomodoroTimeLeft--;
                 updateTimerDisplay();
@@ -1848,21 +2311,23 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
                         pomodoroCount++;
                         pomodoroCountDisplay.textContent = pomodoroCount;
 
+                        const t = translations[currentLang];
                         if (pomodoroCount % 4 === 0) {
                             pomodoroMode = 'longBreak';
                             pomodoroTimeLeft = parseInt(longBreakInput.value) * 60;
-                            timerStatus.textContent = 'Pause longue - Tu l\'as bien merite !';
+                            timerStatus.textContent = t['long-break-msg'];
                             timerStatus.className = 'timer-status break';
                         } else {
                             pomodoroMode = 'shortBreak';
                             pomodoroTimeLeft = parseInt(shortBreakInput.value) * 60;
-                            timerStatus.textContent = 'Pause courte - Detends-toi !';
+                            timerStatus.textContent = t['short-break-msg'];
                             timerStatus.className = 'timer-status break';
                         }
                     } else {
+                        const t = translations[currentLang];
                         pomodoroMode = 'work';
                         pomodoroTimeLeft = parseInt(workDurationInput.value) * 60;
-                        timerStatus.textContent = 'Temps de travail - Concentre-toi !';
+                        timerStatus.textContent = t['work-session'];
                         timerStatus.className = 'timer-status work';
                     }
 
@@ -1872,8 +2337,9 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
                     btnPause.style.display = 'none';
 
                     if (Notification.permission === 'granted') {
+                        const t = translations[currentLang];
                         new Notification('Pomodoro', {
-                            body: pomodoroMode === 'work' ? 'C\'est l\'heure de travailler !' : 'Pause terminee, c\'est reparti !',
+                            body: pomodoroMode === 'work' ? t['notif-work'] : t['notif-break'],
                             icon: '🍅'
                         });
                     }
@@ -1886,7 +2352,7 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
             clearInterval(pomodoroInterval);
             btnStart.style.display = 'inline-block';
             btnPause.style.display = 'none';
-            timerStatus.textContent = 'En pause';
+            timerStatus.textContent = translations[currentLang]['paused'];
         }
 
         function resetPomodoro() {
@@ -1897,7 +2363,7 @@ REPONDS UNIQUEMENT avec la liste numerotee, rien d'autre :
             updateTimerDisplay();
             btnStart.style.display = 'inline-block';
             btnPause.style.display = 'none';
-            timerStatus.textContent = 'Pret a travailler';
+            timerStatus.textContent = translations[currentLang]['ready-work'];
             timerStatus.className = 'timer-status';
         }
 
@@ -2212,7 +2678,7 @@ CONSEIL: [ton conseil]`;
             const sujet = revisionInput.value.trim();
             currentFicheSubject = sujet;
             if (!sujet) {
-                alert('Indique le sujet que tu veux reviser !');
+                alert(translations[currentLang]['alert-subject']);
                 return;
             }
 
@@ -2402,7 +2868,7 @@ REGLES STRICTES :
         // Soumettre le feedback
         btnSubmitFeedback.addEventListener('click', () => {
             if (currentRating === 0) {
-                alert('Merci de donner une note avec les etoiles !');
+                alert(translations[currentLang]['feedback-rate-alert']);
                 return;
             }
 
@@ -2433,6 +2899,9 @@ REGLES STRICTES :
             originalDisplayFicheData(data);
             resetFeedbackForm();
         };
+
+        // Charger la langue au demarrage (a la fin pour s'assurer que tous les elements existent)
+        loadLang();
     </script>
 </body>
 </html>
