@@ -30,6 +30,7 @@ L'Assistant TDAH Intelligent est une application web concu pour aider les person
 5. **Fiches de revision** : Generation dynamique adaptee au sujet et au niveau scolaire
 6. **Systeme de feedback** : Notation et retours pour ameliorer les fiches futures
 7. **Theme clair/sombre** : Basculement automatique ou manuel
+8. **Traduction FR/EN** : Interface bilingue francais/anglais avec sauvegarde de preference
 
 ---
 
@@ -47,7 +48,7 @@ L'Assistant TDAH Intelligent est une application web concu pour aider les person
   - Pas besoin de cle API (authentification via popup)
 
 ### Stockage
-- **localStorage** : Sauvegarde des preferences (theme, niveau scolaire, historique des fiches, feedbacks)
+- **localStorage** : Sauvegarde des preferences (theme, langue, niveau scolaire, historique des fiches, feedbacks)
 
 ---
 
@@ -62,7 +63,8 @@ assistant_tdah.html
 |   |-- Styles CSS (inline)
 |
 |-- <body>
-    |-- Bouton theme (position fixe)
+    |-- Bouton langue FR/EN (position fixe)
+    |-- Bouton theme clair/sombre (position fixe)
     |-- Container principal
         |-- Header (titre + description)
         |-- Navigation par onglets
@@ -160,6 +162,11 @@ body {
 
 ```html
 <body>
+    <!-- Bouton de basculement langue -->
+    <button class="lang-toggle" id="lang-toggle" title="Switch to English">
+        <span id="lang-icon">EN</span>
+    </button>
+
     <!-- Bouton de basculement theme -->
     <button class="theme-toggle" id="theme-toggle" title="Changer de theme">
         <span id="theme-icon">&#9790;</span>
@@ -1201,6 +1208,85 @@ function getFeedbackInstructions() {
 - Si note moyenne < 3 → Ameliorer significativement la qualite
 - Les 3 derniers commentaires pertinents sont transmis a l'IA
 
+### 5.7 Systeme de traduction FR/EN
+
+**Objectif** : Permettre aux utilisateurs francophones et anglophones d'utiliser l'application dans leur langue preferee.
+
+**Bouton de langue** :
+- Position : en haut a droite, a cote du bouton de theme
+- Affiche "EN" quand le site est en francais (pour passer en anglais)
+- Affiche "FR" quand le site est en anglais (pour passer en francais)
+- Sauvegarde la preference dans localStorage
+
+**Elements traduits** :
+| Section | Elements |
+|---------|----------|
+| Header | Titre, sous-titre |
+| Navigation | Onglets (Taches/Tasks, Pomodoro, Conseils/Tips, A connaitre/Study Cards) |
+| Taches | Labels, placeholders, boutons, statistiques |
+| Pomodoro | Statuts, boutons, labels des parametres, notifications |
+| Conseils | Titre, categories, 10 conseils complets |
+| Fiches | Labels, niveaux scolaires, sections, feedback |
+| Alertes | Messages d'erreur et de validation |
+
+**Structure du dictionnaire de traductions** :
+```javascript
+const translations = {
+    fr: {
+        'title': 'Assistant TDAH Intelligent',
+        'subtitle': 'Decompose tes taches, gere ton temps...',
+        'tab-taches': 'Taches',
+        'tab-pomodoro': 'Pomodoro',
+        // ... toutes les traductions FR
+    },
+    en: {
+        'title': 'Smart ADHD Assistant',
+        'subtitle': 'Break down your tasks, manage your time...',
+        'tab-taches': 'Tasks',
+        'tab-pomodoro': 'Pomodoro',
+        // ... toutes les traductions EN
+    }
+};
+```
+
+**Fonctions principales** :
+```javascript
+function loadLang() {
+    const savedLang = localStorage.getItem('tdah-lang') || 'fr';
+    currentLang = savedLang;
+    applyTranslations(savedLang);
+    updateLangIcon(savedLang);
+}
+
+function toggleLang() {
+    currentLang = currentLang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('tdah-lang', currentLang);
+    applyTranslations(currentLang);
+    updateLangIcon(currentLang);
+}
+
+function applyTranslations(lang) {
+    const t = translations[lang];
+    // Applique toutes les traductions aux elements DOM
+    document.querySelector('header h1').textContent = t['title'];
+    // ... autres elements
+}
+```
+
+**CSS pour le bouton de langue** :
+```css
+.lang-toggle {
+    position: fixed;
+    top: 20px;
+    right: 80px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+}
+```
+
 **CSS pour le feedback** :
 ```css
 .feedback-section {
@@ -1268,6 +1354,8 @@ Le CSS complet est disponible dans le fichier source. Points cles :
 - `.celebration-overlay` : Overlay de felicitations
 - `.confetti` : Elements confettis animes
 - `.niveau-select` : Selecteur de niveau scolaire stylise
+- `.lang-toggle` : Bouton de basculement de langue FR/EN
+- `.theme-toggle` : Bouton de basculement theme clair/sombre
 
 ### Animations
 - `.loading-spinner` : Animation de chargement (rotation)
@@ -1396,12 +1484,14 @@ Ce projet est une application web complete qui utilise :
 | Fiches de revision | Generees par IA, adaptees au niveau |
 | Feedback | Notation + tags pour ameliorer l'IA |
 | Theme clair/sombre | Basculement manuel ou automatique |
+| Traduction FR/EN | Interface bilingue avec sauvegarde de preference |
 
 ### Donnees sauvegardees (localStorage)
 
 | Cle | Contenu |
 |-----|---------|
 | `tdah-theme` | Theme actuel (dark/light) |
+| `tdah-lang` | Langue actuelle (fr/en) |
 | `niveau-scolaire` | Niveau scolaire selectionne |
 | `fiches-history` | 10 dernieres fiches generees |
 | `fiches-feedback` | 50 derniers feedbacks |
@@ -1412,4 +1502,4 @@ Pour l'utiliser, il suffit d'ouvrir le fichier `assistant_tdah.html` dans un nav
 
 ---
 
-*Documentation mise a jour le 20 janvier 2026*
+*Documentation mise a jour le 22 janvier 2026*
