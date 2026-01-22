@@ -57,8 +57,13 @@ DEFAULT_KNOWLEDGE_MEMORY = {}
 
 DEFAULT_FEEDBACK = {
     "history": [],
-    "form_feedback": [],
+    "form_feedback": {
+        "spiciness": [],
+        "duration": [],
+        "difficulty": []
+    },
     "pedagogical_feedback": [],
+    "sessions": [],
     "last_session": None
 }
 

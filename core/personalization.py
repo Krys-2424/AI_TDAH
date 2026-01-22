@@ -260,6 +260,75 @@ class UserPersonalization:
             "web_enabled": self.web_enabled
         }
 
+    # ========================================
+    # PRÉDICTIONS PERSONNALISÉES
+    # ========================================
+
+    def personalized_estimate(
+        self,
+        category: str,
+        difficulty: str,
+        base_time: int
+    ) -> int:
+        """
+        Estime le temps personnalisé basé sur l'historique utilisateur
+
+        Args:
+            category: Catégorie de la tâche
+            difficulty: Difficulté de la tâche (easy, medium, hard)
+            base_time: Temps de base estimé en minutes
+
+        Returns:
+            int: Temps estimé personnalisé en minutes
+        """
+        # Récupérer l'historique des durées pour cette catégorie
+        duration_history = self.profile.get("duration_history", {})
+        category_history = duration_history.get(category, [])
+
+        # Si on a assez d'historique (au moins 3 entrées), utiliser la moyenne
+        if len(category_history) >= 3:
+            avg_time = sum(category_history) / len(category_history)
+            # Pondération 70% historique, 30% estimation de base
+            estimated = int(avg_time * 0.7 + base_time * 0.3)
+        else:
+            estimated = base_time
+
+        # Ajuster selon le biais de difficulté utilisateur
+        difficulty_multipliers = {"easy": 0.8, "medium": 1.0, "hard": 1.3}
+        difficulty_mult = difficulty_multipliers.get(difficulty, 1.0)
+
+        # Ajuster selon la sensibilité à la fatigue (ajoute du temps si fatigué)
+        fatigue_mult = 1.0 + (self.fatigue_sensitivity * 0.2)
+
+        # Calcul final
+        final_estimate = int(estimated * difficulty_mult * fatigue_mult)
+
+        # Borner entre 5 et 45 minutes
+        return max(5, min(45, final_estimate))
+
+    def record_task_duration(self, category: str, actual_duration: int):
+        """
+        Enregistre la durée réelle d'une tâche pour améliorer les prédictions
+
+        Args:
+            category: Catégorie de la tâche
+            actual_duration: Durée réelle en minutes
+        """
+        if "duration_history" not in self.profile:
+            self.profile["duration_history"] = {}
+
+        if category not in self.profile["duration_history"]:
+            self.profile["duration_history"][category] = []
+
+        # Garder les 20 dernières entrées par catégorie
+        history = self.profile["duration_history"][category]
+        history.append(actual_duration)
+        if len(history) > 20:
+            history = history[-20:]
+
+        self.profile["duration_history"][category] = history
+        self.save_profile()
+
 
 # Import pour update_streak
 from datetime import timedelta
